@@ -2,8 +2,8 @@
 include_once 'connect.php';
     
 
-if (!isset($_POST['deleteComm'])) {
-    $delete_comm = $_POST['post_id'];
+if (!isset($_GET['deleteComm'])) {
+    $delete_comm = $_GET['post_id'];
 
     $sql = "DELETE FROM comments WHERE id = $delete_comm";
     $statement = $conn->prepare($sql);

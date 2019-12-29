@@ -19,7 +19,7 @@ include_once 'create-comment.php';
 
             <?php 
             if (isset($_GET['id'])) {
-                $sql = "SELECT posts.id, posts.title, posts.body, posts.created_at, posts.user_id, users.first_name, users.last_name, comments.id, comments.author, comments.text, comments.post_id FROM posts LEFT JOIN comments ON comments.post_id = {$_GET['id']} LEFT JOIN users ON users.id = posts.user_id ORDER BY posts.id = {$_GET['id']} DESC";
+                $sql = "SELECT posts.id, posts.title, posts.body, posts.created_at, posts.user_id, users.first_name, users.last_name, comments.id, comments.author, comments.text, comments.post_id FROM posts LEFT JOIN comments ON comments.post_id = {$_GET['id']} RIGHT JOIN users ON users.id = posts.user_id ORDER BY posts.id = {$_GET['id']} DESC";
             
                 $statement = $conn->prepare($sql);
                 $statement->execute();
@@ -48,20 +48,31 @@ include_once 'create-comment.php';
             <button class="btn btn-outline-secondary" onclick="button()">Show / Hide comments</button>
             <br><br>
             
-            <?php $i = 1; while($i < $single_post['post_id']) { ?>
+            <?php
+            $sql = "SELECT * FROM comments inner join posts on posts.id = comments.post_id";
+            $statement = $conn->prepare($sql);
+            $statement->execute();
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $comment_post = $statement->fetchAll();
 
-            <div id="myDiv" class="all-comment-post" style="border: 1px solid #999; padding: 10px"><br>
-                <h5> - <?php echo $single_post['author'] ?></h5>
+            
+            ?>
+
+            <?php foreach ($comment_post as $postsCom) { ?>
+
+            <div id="myDiv" class="all-comment-post"><br>
+                <h5> - <?php echo $postsCom['author'] ?></h5>
                 <ul>
-                    <li><?php echo $single_post['text'] ?></li>
+                    <li><?php echo $postsCom['text'] ?></li>
                 </ul>
-                <form method="POST" action="delete-comment.php">
-                    <input type="hidden" value="<?php echo $single_post['post_id'] ?>" name="post_id"/>
+                <form method="GET" action="delete-comment.php">
+                    <input type="hidden" value="<?php echo $postsCom['post_id'] ?>" name="post_id"/>
                     <button id="deleteComm" class="btn btn-primary">Delete post</button>
                 </form>
             </div><br>
+            <hr>
             <br>
-            <?php $i++; } ?>
+            <?php } ?>
 
             <?php } else {
                 echo "PAGE NOT FOUND! <br>";
