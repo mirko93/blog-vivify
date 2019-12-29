@@ -1,4 +1,8 @@
 <?php 
+
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+
 include_once 'connect.php';
 include_once 'create-comment.php';
 
@@ -16,6 +20,7 @@ include_once 'create-comment.php';
                 <input type="hidden" value="<?php echo $_GET['id']; ?>" name="id"/>
                 <button id="deletePost" class="btn btn-outline-danger">Delete post</button>
             </form>
+            <br>
 
             <?php 
             if (isset($_GET['id'])) {
@@ -45,9 +50,6 @@ include_once 'create-comment.php';
                 </form>
             </div>
 
-            <button class="btn btn-outline-secondary" onclick="button()">Show / Hide comments</button>
-            <br><br>
-            
             <?php
             $sql = "SELECT * FROM posts inner join comments on comments.post_id = {$_GET['id']}";
             $statement = $conn->prepare($sql);
@@ -57,35 +59,25 @@ include_once 'create-comment.php';
 
             
             ?>
-
-            <?php 
-
-            foreach ($comment_post as $post_comm) {
-            $i = 1;
-
-            while ($i < $post_comm['post_id']) {
-                if (($post_comm['post_id'] % $i) === 0) {
             
-            ?>
-
-            <div id="myDiv" class="all-comment-post"><br>
-                <h5> - <?php echo $post_comm['author'] ?></h5>
-                <ul>
-                    <li><?php echo $post_comm['text'] ?></li>
-                </ul>
-                <form method="GET" action="delete-comment.php">
-                    <input type="hidden" value="<?php echo $post_comm['post_id'] ?>" name="id"/>
-                    <button id="deleteComm" class="btn btn-primary">Delete post</button>
-                </form>
-            </div><br>
-            <hr>
-            <br>
-            <?php break; }
-                 }
-            } ?>
-
+            <button class="btn btn-outline-secondary" onclick="button()">Show / Hide comments</button>
+            <br> <br>
+    
+            <form id="myDiv" method="GET" action="delete-comment.php">
+                <?php foreach ($comment_post as $post_comm): ?>
+                <h5> - <b><?php echo $post_comm["author"] ?></b></h5>
+                <div>
+                    <ul>
+                        <li><?php echo $post_comm["text"] ?></li>
+                    </ul>
+                </div>
+                <input type="hidden" value="<?php echo $post_comm["post_id"] ?>" name="id"/>
+                <button class="btn btn-warning">Delete</button><br><br>
+                <br> <br>
+                <?php endforeach ?>
+            </form>
+            
             <?php } else {
-                
                 echo "PAGE NOT FOUND! <br>";
                 echo '<a href="index.php">Back to Home Page</a>';
             } ?>
@@ -98,6 +90,4 @@ include_once 'create-comment.php';
 
 </main><!-- /.container -->
 
-<?php 
-include_once 'footer.php';
-?>
+<?php include_once 'footer.php'; ?>

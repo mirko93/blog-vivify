@@ -22,12 +22,13 @@ $post = $statement->fetch();
             <div class="blog-post">
                 <h2 class="blog-post-title" style="text-decoration: none;">Create New Post</h2>
             </div>
+
             <div class="create-post">
                 <form action="post-create.php" method="POST">
                     <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
                     <input type="text" name="title" placeholder="Title" required><br> <br>
                     <textarea id="text" name="body" cols="30" rows="10" placeholder="Body text" required></textarea><br><br>
-                    <button class="btn btn-outline-primary" name="button">Post comment</button><br> <br>
+                    <button class="btn btn-outline-primary" name="button">Create Post</button><br> <br>
                 </form>
             </div>
 
