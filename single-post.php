@@ -19,7 +19,7 @@ include_once 'create-comment.php';
 
             <?php 
             if (isset($_GET['id'])) {
-                $sql = "SELECT posts.id, posts.title, posts.body, posts.created_at, posts.user_id, users.first_name, users.last_name, comments.id, comments.author, comments.text, comments.post_id FROM posts LEFT JOIN comments ON comments.post_id = {$_GET['id']} RIGHT JOIN users ON users.id = posts.user_id ORDER BY posts.id = {$_GET['id']} DESC";
+            $sql = "SELECT posts.id, posts.title, posts.body, posts.created_at, posts.user_id, users.first_name, users.last_name FROM users LEFT JOIN posts ON posts.id = {$_GET['id']}";
             
                 $statement = $conn->prepare($sql);
                 $statement->execute();
@@ -49,7 +49,7 @@ include_once 'create-comment.php';
             <br><br>
             
             <?php
-            $sql = "SELECT * FROM comments inner join posts on posts.id = comments.post_id";
+            $sql = "SELECT * FROM posts inner join comments on comments.post_id = {$_GET['id']}";
             $statement = $conn->prepare($sql);
             $statement->execute();
             $statement->setFetchMode(PDO::FETCH_ASSOC);
@@ -58,7 +58,9 @@ include_once 'create-comment.php';
             
             ?>
 
-            <?php foreach ($comment_post as $postsCom) { ?>
+            <?php foreach ($comment_post as $postsCom) {
+                    
+            ?>
 
             <div id="myDiv" class="all-comment-post"><br>
                 <h5> - <?php echo $postsCom['author'] ?></h5>
@@ -66,7 +68,7 @@ include_once 'create-comment.php';
                     <li><?php echo $postsCom['text'] ?></li>
                 </ul>
                 <form method="GET" action="delete-comment.php">
-                    <input type="hidden" value="<?php echo $postsCom['post_id'] ?>" name="post_id"/>
+                    <input type="hidden" value="<?php echo $postsCom['post_id'] ?>" name="id"/>
                     <button id="deleteComm" class="btn btn-primary">Delete post</button>
                 </form>
             </div><br>
@@ -75,6 +77,7 @@ include_once 'create-comment.php';
             <?php } ?>
 
             <?php } else {
+                
                 echo "PAGE NOT FOUND! <br>";
                 echo '<a href="index.php">Back to Home Page</a>';
             } ?>
