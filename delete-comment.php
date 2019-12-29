@@ -13,4 +13,3 @@ header("Location: single-post.php?id=$delete_comm");
 }
 
 ?>
-

@@ -58,23 +58,31 @@ include_once 'create-comment.php';
             
             ?>
 
-            <?php foreach ($comment_post as $postsCom) {
-                    
+            <?php 
+
+            foreach ($comment_post as $post_comm) {
+            $i = 1;
+
+            while ($i < $post_comm['post_id']) {
+                if (($post_comm['post_id'] % $i) === 0) {
+            
             ?>
 
             <div id="myDiv" class="all-comment-post"><br>
-                <h5> - <?php echo $postsCom['author'] ?></h5>
+                <h5> - <?php echo $post_comm['author'] ?></h5>
                 <ul>
-                    <li><?php echo $postsCom['text'] ?></li>
+                    <li><?php echo $post_comm['text'] ?></li>
                 </ul>
                 <form method="GET" action="delete-comment.php">
-                    <input type="hidden" value="<?php echo $postsCom['post_id'] ?>" name="id"/>
+                    <input type="hidden" value="<?php echo $post_comm['post_id'] ?>" name="id"/>
                     <button id="deleteComm" class="btn btn-primary">Delete post</button>
                 </form>
             </div><br>
             <hr>
             <br>
-            <?php } ?>
+            <?php break; }
+                 }
+            } ?>
 
             <?php } else {
                 
