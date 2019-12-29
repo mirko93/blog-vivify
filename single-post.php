@@ -12,6 +12,11 @@ include_once 'create-comment.php';
 
         <div class="col-sm-8 blog-main">
 
+            <form method="POST" action="delete-post.php">
+                <input type="hidden" value="<?php echo $_GET['id']; ?>" name="id"/>
+                <button id="deletePost" class="btn btn-outline-danger">Delete post</button>
+            </form>
+
             <?php 
             if (isset($_GET['id'])) {
                 $sql = "SELECT posts.id, posts.title, posts.body, posts.created_at, posts.user_id, users.first_name, users.last_name, comments.id, comments.author, comments.text, comments.post_id FROM posts LEFT JOIN comments ON comments.post_id = {$_GET['id']} LEFT JOIN users ON users.id = posts.user_id ORDER BY posts.id = {$_GET['id']} DESC";
@@ -39,15 +44,22 @@ include_once 'create-comment.php';
                     <button class="btn btn-outline-success" name="button">Post comment</button><br> <br>
                 </form>
             </div>
+
+            <button class="btn btn-outline-secondary" onclick="button()">Show / Hide comments</button>
+            <br><br>
             
             <?php $i = 1; while($i < $single_post['post_id']) { ?>
 
-            <div class="all-comment-post" style="border: 1px solid #999; padding: 10px"><br>
+            <div id="myDiv" class="all-comment-post" style="border: 1px solid #999; padding: 10px"><br>
                 <h5> - <?php echo $single_post['author'] ?></h5>
                 <ul>
                     <li><?php echo $single_post['text'] ?></li>
                 </ul>
-            </div>
+                <form method="POST" action="delete-comment.php">
+                    <input type="hidden" value="<?php echo $single_post['post_id'] ?>" name="post_id"/>
+                    <button id="deleteComm" class="btn btn-primary">Delete post</button>
+                </form>
+            </div><br>
             <br>
             <?php $i++; } ?>
 

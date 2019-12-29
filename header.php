@@ -16,6 +16,8 @@
     <!-- Custom styles for this template -->
     <link href="styles/blog.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
+
+    <script src="js/app.js"></script>
 </head>
 
 <body>

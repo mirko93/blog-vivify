@@ -4,9 +4,10 @@ include_once 'connect.php';
 
 $title = '';
 $body = '';
+$user_id = 1;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $id = $_POST['id'];
+    // $id = $_POST['id'];
     $title = $_POST["title"];
     $body = $_POST["body"];
     $user_id = $_POST["user_id"];

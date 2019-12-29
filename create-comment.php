@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header("Location: single-post.php?id=$post_id");
 }
-  
+
 
 
 
